@@ -1,42 +1,27 @@
-import { styled, type Interaction, type SizeValue } from "@mutualzz/ui-core";
-import Color from "color";
+import { Interactive, type Interaction } from "@mutualzz/ui-core";
 import { forwardRef, useCallback } from "react";
+import { hsvaToHslaString } from "../Converters/Converters";
 import type { AlphaProps } from "./Alpha.types";
 import { Pointer } from "./Pointer";
 
 export const BACKGROUND_IMG =
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYGAQYcAP3uCTZhw1gGGYhAGBZIA/nYDCgBDAm9BGDWAAJyRCgLaBCAAgXwixzAS0pgAAAABJRU5ErkJggg==";
 
-const AlphaWrapper = styled("div")<{
-    radius?: SizeValue;
-    width?: SizeValue;
-    height?: SizeValue;
-}>(({ theme, radius, width, height }) => ({
-    borderRadius: radius,
-    background: `url(${BACKGROUND_IMG}) left center`,
-    backgroundColor: theme.colors.common.white,
-    position: "relative",
-    ...{ width, height },
-}));
-
-const AlphaBar = styled("div")<{ background: string; radius: SizeValue }>(
-    ({ background, radius }) => ({
-        inset: 0,
-        position: "absolute",
-        background,
-        borderRadius: radius,
-    }),
-);
-
 const Alpha = forwardRef<HTMLDivElement, AlphaProps>(
     (
         {
             hsva,
+            background,
+            bgProps = {},
+            innerProps = {},
+            pointerProps = {},
             radius = 0,
             width,
             height = 16,
             orientation = "horizontal",
+            css,
             onChange,
+            pointer,
             ...props
         },
         ref,
@@ -45,27 +30,28 @@ const Alpha = forwardRef<HTMLDivElement, AlphaProps>(
             onChange?.(
                 {
                     ...hsva,
-                    a: orientation === "horizontal" ? offset.left : offset.top,
+                    alpha:
+                        orientation === "horizontal" ? offset.left : offset.top,
                 },
                 offset,
             );
         };
 
-        const colorTo = new Color(hsva).hsl().object();
-
+        const colorTo = hsvaToHslaString(Object.assign({}, hsva, { alpha: 1 }));
         const innerBackground = `linear-gradient(to ${
             orientation === "horizontal" ? "right" : "bottom"
         }, rgba(244, 67, 54, 0) 0%, ${colorTo} 100%)`;
 
         const comProps: { left?: string; top?: string } = {};
 
-        if (orientation === "horizontal") comProps.left = `${hsva.a * 100}%`;
-        else comProps.top = `${hsva.a * 100}%`;
+        if (orientation === "horizontal")
+            comProps.left = `${hsva.alpha * 100}%`;
+        else comProps.top = `${hsva.alpha * 100}%`;
 
         const handleKeyDown = useCallback(
             (event: React.KeyboardEvent<HTMLDivElement>) => {
-                const step = 0.01; // 1% step
-                const currentAlpha = hsva.a;
+                const step = 0.01;
+                const currentAlpha = hsva.alpha;
                 let newAlpha = currentAlpha;
                 switch (event.key) {
                     case "ArrowLeft":
@@ -98,15 +84,18 @@ const Alpha = forwardRef<HTMLDivElement, AlphaProps>(
 
                 if (newAlpha !== currentAlpha) {
                     const syntheticOffset: Interaction = {
-                        left: orientation === "horizontal" ? newAlpha : hsva.a,
-                        top: orientation === "vertical" ? newAlpha : hsva.a,
+                        left:
+                            orientation === "horizontal"
+                                ? newAlpha
+                                : hsva.alpha,
+                        top: orientation === "vertical" ? newAlpha : hsva.alpha,
                         width: 0,
                         height: 0,
                         x: 0,
                         y: 0,
                     };
                     onChange &&
-                        onChange({ ...hsva, a: newAlpha }, syntheticOffset);
+                        onChange({ ...hsva, alpha: newAlpha }, syntheticOffset);
                 }
             },
             [hsva, orientation, onChange],
@@ -119,22 +108,57 @@ const Alpha = forwardRef<HTMLDivElement, AlphaProps>(
             [],
         );
 
-        const pointerElement = <Pointer {...comProps} />;
+        const pointerElement =
+            pointer && typeof pointer === "function" ? (
+                pointer({ ...pointerProps, ...comProps })
+            ) : (
+                <Pointer {...pointerProps} {...comProps} />
+            );
 
         return (
-            <AlphaWrapper
-                radius={radius as SizeValue}
-                width={width as SizeValue}
-                height={height as SizeValue}
+            <div
                 ref={ref}
                 {...props}
+                css={{
+                    borderRadius: radius,
+                    background: `url(${BACKGROUND_IMG}) left center`,
+                    backgroundColor: "#fff",
+                    ...{ width, height },
+                    ...css,
+                    position: "relative",
+                }}
             >
-                <AlphaBar
-                    background={innerBackground}
-                    radius={radius as SizeValue}
+                <div
+                    {...bgProps}
+                    css={{
+                        inset: 0,
+                        position: "absolute",
+                        background: background || innerBackground,
+                        borderRadius: radius,
+                        ...bgProps.css,
+                    }}
                 />
                 <Interactive
-            </AlphaWrapper>
+                    {...innerProps}
+                    css={{
+                        ...innerProps.css,
+                        inset: 0,
+                        zIndex: 1,
+                        position: "absolute",
+                        outline: "none",
+                    }}
+                    onMove={handleChange}
+                    onDown={handleChange}
+                    onClick={handleClick}
+                    onKeyDown={handleKeyDown}
+                >
+                    {pointerElement}
+                </Interactive>
+            </div>
         );
     },
 );
+
+Alpha.displayName = "Alpha";
+
+export { Alpha };

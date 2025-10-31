@@ -1,33 +1,41 @@
-import { formatColor, styled } from "@mutualzz/ui-core";
-import type { FC, HTMLAttributes } from "react";
+import { formatColor } from "@mutualzz/ui-core";
+import type { FC } from "react";
+import type { PointerProps } from "./Alpha.types";
 
-export interface PointerProps extends HTMLAttributes<HTMLDivElement> {
-    left?: string;
-    top?: string;
-}
-
-const PointerWrapper = styled("div")<PointerProps>(({ top, left }) => ({
-    position: "absolute",
+export const Pointer: FC<PointerProps> = ({
     top,
     left,
-}));
-
-const PointerItself = styled("div")<PointerProps>(({ theme, left }) => ({
-    width: 18,
-    height: 18,
-    boxShadow: "rgb(0 0 0 / 37%) 0px 1px 4px 0px",
-    backgroundColor: formatColor(theme.colors.common.white, {
-        format: "rgb",
-        darken: 0.15,
-    }),
-    borderRadius: "50%",
-    transform: left ? "translate(-9px, -1px)" : "translate(-1px, -9px)",
-}));
-
-export const Pointer: FC<PointerProps> = ({ top, left, ...props }) => {
+    css,
+    fillProps,
+    ...props
+}) => {
     return (
-        <PointerWrapper top={top} left={left} {...props}>
-            <PointerItself left={left} />
-        </PointerWrapper>
+        <div
+            css={{
+                ...css,
+                position: "absolute",
+                top,
+                left,
+            }}
+            {...props}
+        >
+            <div
+                {...fillProps}
+                css={{
+                    width: 18,
+                    height: 18,
+                    boxShadow: "rgb(0 0 0 / 37%) 0px 1px 4px 0px",
+                    backgroundColor: formatColor("#fff", {
+                        format: "rgba",
+                        darken: 0.15,
+                    }),
+                    borderRadius: "50%",
+                    ...fillProps?.css,
+                    transform: left
+                        ? "translate(-9px, -1px)"
+                        : "translate(-1px, -9px)",
+                }}
+            />
+        </div>
     );
 };

@@ -2,7 +2,6 @@
     "author": "Azrael",
     "dependencies": {
         "@mutualzz/ui-core": "workspace:*",
-        "@mutualzz/ui-web": "workspace:*",
         "color": "^5.0.2"
     },
     "exports": {
