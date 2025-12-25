@@ -18,17 +18,16 @@
     "module": "./dist/index.mjs",
     "name": "@mutualzz/color-picker",
     "peerDependencies": {
-        "@emotion/react": "*",
-        "@emotion/styled": "*",
-        "@types/react": "*",
-        "react": "*"
+        "@emotion/react": "11.14.0",
+        "@emotion/styled": "11.14.1",
+        "@types/react": "19.1.10",
+        "react": "19.1.0"
     },
     "scripts": {
         "build": "pnpm typecheck && bunchee",
         "dev": "bunchee --watch",
         "typecheck": "tsc --noEmit"
     },
-    "sideEffects": false,
     "types": "./dist/index.d.ts",
     "version": "1.0.0"
 }
