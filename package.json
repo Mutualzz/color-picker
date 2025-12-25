@@ -5,7 +5,7 @@
         "color": "^5.0.3"
     },
     "devDependencies": {
-        "bunchee": "^6.6.2"
+        "bunchee": "^6.7.0"
     },
     "exports": {
         ".": {
