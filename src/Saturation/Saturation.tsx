@@ -1,11 +1,11 @@
-import { Interactive, type Interaction } from "@mutualzz/ui-core";
+import { type Interaction, Interactive } from "@mutualzz/ui-core";
 import { forwardRef, useCallback, useMemo } from "react";
 import { hsvaToHslaString } from "../Converters/Converters";
 import { Pointer } from "./Pointer";
 import type { SaturationProps } from "./Saturation.types";
 
 const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
-    ({ radius = 0, hue = 0, hsva, onChange, pointer, ...props }, ref) => {
+    ({ radius = 0, hue = 0, hsva, onChange, pointer, ...props }) => {
         const handleChange = (interaction: Interaction) => {
             hsva &&
                 onChange?.({
@@ -97,7 +97,6 @@ const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
                     position: "relative",
                     outline: "none",
                 }}
-                ref={ref}
                 onMove={handleChange}
                 onDown={handleChange}
                 onKeyDown={handleKeyDown}

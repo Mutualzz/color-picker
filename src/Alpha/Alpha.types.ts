@@ -1,6 +1,6 @@
 import type { CSSObject } from "@emotion/react";
 import type { HsvaColor, Interaction } from "@mutualzz/ui-core";
-import type { HTMLAttributes, JSX } from "react";
+import type { HTMLAttributes, JSX, Ref } from "react";
 
 export interface PointerProps extends HTMLAttributes<HTMLDivElement> {
     left?: string;
@@ -10,8 +10,10 @@ export interface PointerProps extends HTMLAttributes<HTMLDivElement> {
     css?: CSSObject;
 }
 
-export interface AlphaProps
-    extends Omit<HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface AlphaProps extends Omit<
+    HTMLAttributes<HTMLDivElement>,
+    "onChange"
+> {
     width?: string | number;
     height?: string | number;
     hsva: HsvaColor;
@@ -31,4 +33,6 @@ export interface AlphaProps
     onChange?: (newAlpha: { alpha: number }, offset: Interaction) => void;
 
     css?: CSSObject;
+
+    ref?: Ref<HTMLDivElement>;
 }

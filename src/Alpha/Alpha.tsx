@@ -1,4 +1,4 @@
-import { Interactive, type Interaction } from "@mutualzz/ui-core";
+import { type Interaction, Interactive } from "@mutualzz/ui-core";
 import { forwardRef, useCallback } from "react";
 import { hsvaToHslaString } from "../Converters/Converters";
 import type { AlphaProps } from "./Alpha.types";
