@@ -5,7 +5,7 @@ import { Pointer } from "./Pointer";
 import type { SaturationProps } from "./Saturation.types";
 
 const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
-    ({ radius = 0, hue = 0, hsva, onChange, pointer, ...props }) => {
+    ({ radius = 0, hue = 0, hsva, onChange, pointer, ...props }, _ref) => {
         const handleChange = (interaction: Interaction) => {
             hsva &&
                 onChange?.({
