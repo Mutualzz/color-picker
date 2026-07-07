@@ -205,7 +205,7 @@ export const hsvaToRgba = ({ h, s, v, alpha }: HsvaColor): RgbaColor => {
         _v = v / SV_MAX,
         hi = Math.floor(_h) % 6;
 
-    let f = _h - Math.floor(_h),
+    const f = _h - Math.floor(_h),
         _p = RGB_MAX * _v * (1 - _s),
         _q = RGB_MAX * _v * (1 - _s * f),
         _t = RGB_MAX * _v * (1 - _s * (1 - f));
@@ -334,11 +334,6 @@ export const equalColorObjects = (
     if (first === second) return true;
 
     for (const prop in first) {
-        // The following allows for a type-safe calling of this function (first & second have to be HSL, HSV, or RGB)
-        // with type-unsafe iterating over object keys. TS does not allow this without an index (`[key: string]: number`)
-        // on an object to define how iteration is normally done. To ensure extra keys are not allowed on our types,
-        // we must cast our object to unknown (as RGB demands `r` be a key, while `Record<string, x>` does not care if
-        // there is or not), and then as a type TS can iterate over.
         if (
             (first as unknown as Record<string, number>)[prop] !==
             (second as unknown as Record<string, number>)[prop]
