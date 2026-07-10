@@ -1,3 +1,4 @@
+import type { CSSObject } from "@emotion/react";
 import type { HsvaColor } from "@mutualzz/ui-core";
 import type { HTMLAttributes, JSX } from "react";
 import type { PointerProps } from "../Alpha/Alpha.types";
@@ -7,6 +8,7 @@ export interface SaturationProps
     hsva?: HsvaColor;
     hue?: number;
     radius?: string | number;
+    css?: CSSObject;
 
     pointer?: ({ left, top, color }: PointerProps) => JSX.Element;
 

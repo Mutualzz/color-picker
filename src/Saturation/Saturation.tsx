@@ -5,7 +5,10 @@ import { Pointer } from "./Pointer";
 import type { SaturationProps } from "./Saturation.types";
 
 const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
-    ({ radius = 0, hue = 0, hsva, onChange, pointer, ...props }, _ref) => {
+    (
+        { radius = 0, hue = 0, hsva, onChange, pointer, css, ...props },
+        _ref,
+    ) => {
         const handleChange = (interaction: Interaction) => {
             hsva &&
                 onChange?.({
@@ -85,18 +88,22 @@ const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
         return (
             <Interactive
                 {...props}
-                css={{
-                    inset: 0,
-                    cursor: "crosshair",
-                    backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(${
-                        hsva?.h ?? hue
-                    }, 100%, 50%))`,
-                    width: 200,
-                    height: 200,
-                    borderRadius: radius,
-                    position: "relative",
-                    outline: "none",
-                }}
+                css={[
+                    {
+                        inset: 0,
+                        cursor: "crosshair",
+                        backgroundImage: `linear-gradient(0deg, #000, transparent), linear-gradient(90deg, #fff, hsl(${
+                            hsva?.h ?? hue
+                        }, 100%, 50%))`,
+                        width: "100%",
+                        height: "auto",
+                        aspectRatio: "1",
+                        borderRadius: radius,
+                        position: "relative",
+                        outline: "none",
+                    },
+                    css,
+                ]}
                 onMove={handleChange}
                 onDown={handleChange}
                 onKeyDown={handleKeyDown}
