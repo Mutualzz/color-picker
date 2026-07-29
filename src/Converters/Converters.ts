@@ -200,10 +200,10 @@ export const hexToRgba = (hex: string): RgbaColor => {
  * @param color HSVA color as an array [0-360, 0-1, 0-1, 0-1]
  */
 export const hsvaToRgba = ({ h, s, v, alpha }: HsvaColor): RgbaColor => {
-    let _h = h / 60,
-        _s = s / SV_MAX,
-        _v = v / SV_MAX,
-        hi = Math.floor(_h) % 6;
+    const _h = h / 60;
+    const _s = s / SV_MAX;
+    let _v = v / SV_MAX;
+    const hi = Math.floor(_h) % 6;
 
     const f = _h - Math.floor(_h),
         _p = RGB_MAX * _v * (1 - _s),

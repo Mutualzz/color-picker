@@ -94,15 +94,14 @@ const Alpha = forwardRef<HTMLDivElement, AlphaProps>(
                         x: 0,
                         y: 0,
                     };
-                    onChange &&
-                        onChange({ ...hsva, alpha: newAlpha }, syntheticOffset);
+                    onChange?.({ ...hsva, alpha: newAlpha }, syntheticOffset);
                 }
             },
             [hsva, orientation, onChange],
         );
 
         const handleClick = useCallback(
-            (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            (event: React.MouseEvent<HTMLDivElement>) => {
                 (event.target as HTMLElement).focus();
             },
             [],

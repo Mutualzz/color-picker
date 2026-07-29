@@ -10,13 +10,13 @@ const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
         _ref,
     ) => {
         const handleChange = (interaction: Interaction) => {
-            hsva &&
-                onChange?.({
-                    h: hsva.h,
-                    s: interaction.left * 100,
-                    v: (1 - interaction.top) * 100,
-                    alpha: hsva.alpha,
-                });
+            if (!hsva) return;
+            onChange?.({
+                h: hsva.h,
+                s: interaction.left * 100,
+                v: (1 - interaction.top) * 100,
+                alpha: hsva.alpha,
+            });
         };
 
         const handleKeyDown = useCallback(
@@ -25,40 +25,33 @@ const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
                 const step = 1;
                 let newS = hsva.s;
                 let newV = hsva.v;
-                let changed = false;
 
                 switch (event.key) {
                     case "ArrowLeft":
                         newS = Math.max(0, hsva.s - step);
-                        changed = true;
                         event.preventDefault();
                         break;
                     case "ArrowRight":
                         newS = Math.min(100, hsva.s + step);
-                        changed = true;
                         event.preventDefault();
                         break;
                     case "ArrowUp":
                         newV = Math.min(100, hsva.v + step);
-                        changed = true;
                         event.preventDefault();
                         break;
                     case "ArrowDown":
                         newV = Math.max(0, hsva.v - step);
-                        changed = true;
                         event.preventDefault();
                         break;
                     default:
                         return;
                 }
-                if (changed) {
-                    onChange({
-                        h: hsva.h,
-                        s: newS,
-                        v: newV,
-                        alpha: hsva.alpha,
-                    });
-                }
+                onChange({
+                    h: hsva.h,
+                    s: newS,
+                    v: newV,
+                    alpha: hsva.alpha,
+                });
             },
             [hsva, onChange],
         );
@@ -79,7 +72,7 @@ const Saturation = forwardRef<HTMLDivElement, SaturationProps>(
         }, [hsva, pointer]);
 
         const handleClick = useCallback(
-            (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+            (event: React.MouseEvent<HTMLDivElement>) => {
                 (event.target as HTMLElement).focus();
             },
             [],

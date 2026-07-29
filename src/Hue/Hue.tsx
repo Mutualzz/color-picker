@@ -14,13 +14,12 @@ const Hue = forwardRef<HTMLDivElement, HueProps>(
                 }, rgb(255, 0, 0) 0%, rgb(255, 255, 0) 17%, rgb(0, 255, 0) 33%, rgb(0, 255, 255) 50%, rgb(0, 0, 255) 67%, rgb(255, 0, 255) 83%, rgb(255, 0, 0) 100%)`}
                 hsva={{ h: hue, s: 100, v: 100, alpha: hue / 360 }}
                 onChange={(_, interaction) => {
-                    onChange &&
-                        onChange({
-                            h:
-                                orientation === "horizontal"
-                                    ? 360 * interaction.left
-                                    : 360 * interaction.top,
-                        });
+                onChange?.({
+                    h:
+                        orientation === "horizontal"
+                            ? 360 * interaction.left
+                            : 360 * interaction.top,
+                });
                 }}
             />
         );

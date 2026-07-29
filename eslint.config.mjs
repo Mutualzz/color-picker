@@ -1,17 +1,18 @@
 import { react } from "@mutualzz/eslint-config";
 
 export default [
-    ...react,
-    {
-        languageOptions: {
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
-        },
-        rules: {
-            "@typescript-eslint/unbound-method": "off",
-            "@typescript-eslint/no-unsafe-argument": "off",
-        },
+  ...react,
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
+    rules: {
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+    },
+  },
 ];
